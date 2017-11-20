@@ -17,31 +17,27 @@ export default class MoreGoods extends Component {
                     icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
                     desc:'Olay法国巴黎进口',
                     price:'199.00'
-                },
-                {
+                },{
                     icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
                     desc:'Olay法国巴黎进口',
                     price:'199.00'
-                },
-                {
+                },{
                     icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
                     desc:'Olay法国巴黎进口',
                     price:'199.00'
-                },
+                },{
                     icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
                     desc:'Olay法国巴黎进口',
                     price:'199.00'
-                },
-                {
+                },{
                     icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
                     desc:'Olay法国巴黎进口',
                     price:'199.00'
-                },
-                {
+                },{
                     icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
                     desc:'Olay法国巴黎进口',
                     price:'199.00'
-                },
+                }
             ]
         }
     }

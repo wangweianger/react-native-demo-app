@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   ScrollView,
@@ -8,10 +7,13 @@ import {
   View,
   Image
 } from 'react-native';
-import Search from './item/search';
 import util from '../../common/util'
-import Swiper from 'react-native-swiper';
 
+import Search from './item/search'
+import Swiper from './item/swiper'
+import Entrys from './item/entrys'
+import BigImg from './item/bigImg'
+import MoreGoods from './item/moreGoods'
 
 export default class Home extends Component {
     constructor() {
@@ -39,24 +41,11 @@ export default class Home extends Component {
                             progressBackgroundColor="#ffff00"
                         />
                     }>
-                    <Swiper style={styles.wrapper} showsButtons={false} loop={true} autoplay={true} autoplayTimeout={5} showsPagination={true}
-                    dotStyle={{marginBottom:-20}} activeDotStyle={{marginBottom:-20}}>
-                        <View>
-                            <Image
-                                source={{uri:'https://img.allpyra.com/9bf51117-ded5-49e4-bb04-3c8c8268a3cd.png?imageslim'}} 
-                                style={{width: util.size.width, height: 200}}/>
-                        </View>
-                        <View>
-                            <Image
-                                source={{uri:'https://img.allpyra.com/b5faa181-39a9-4ff8-92ea-8ad0e2087118.png?imageslim'}} 
-                                style={{width: util.size.width, height: 200}}/>
-                        </View>
-                        <View>
-                            <Image
-                                source={{uri:'https://img.allpyra.com/09d76250-98be-4a1f-964b-7d090d8440ef.png?imageslim'}} 
-                                style={{width: util.size.width, height: 200}}/>
-                        </View>
-                    </Swiper>
+                    <Swiper />
+                    <Entrys />
+                    <BigImg />
+                    <MoreGoods />
+
                     <Text style={styles.welcome}>
                         home!
                     </Text>
@@ -116,9 +105,6 @@ const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
         marginTop: -20
-    },
-    wrapper: {
-        height:200,
     },
 });
 

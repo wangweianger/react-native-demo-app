@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
         backgroundColor:"#fff", 
         borderBottomColor:"#ddd",
         borderBottomWidth:1 * Uitls.pixel,
-        borderStyle:'solid'
+        borderStyle:'solid',
+        zIndex:10000
     },
     icon:{
         width:28,

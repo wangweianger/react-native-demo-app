@@ -1,4 +1,6 @@
 
+![demo首页](https://github.com/wangweianger/react-native-demo-app/blob/master/demoImg/01.png "demo首页")
+
 ## 项目步骤
 
 1.安装项目依赖包

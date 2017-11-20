@@ -27,7 +27,7 @@ export default class Home extends Component {
         return (
             <View style={styles.container}>
                 <Search navigator={this.props.navigator}/>
-                <ScrollView
+                <ScrollView 
                     style={styles.scrollView}
                     refreshControl={
                         <RefreshControl
@@ -60,7 +60,7 @@ export default class Home extends Component {
                     <Text style={styles.welcome}>
                         home!
                     </Text>
-                </ScrollView >
+                </ScrollView>
             </View>
         );
     }
@@ -114,7 +114,8 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     scrollView: {
-        flex: 1
+        flex: 1,
+        marginTop: -20
     },
     wrapper: {
         height:200,

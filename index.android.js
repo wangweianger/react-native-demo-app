@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import Zane from './src/main'
+import Main from './src/main'
 
-AppRegistry.registerComponent('Zane', () => Zane);
+AppRegistry.registerComponent('Zane', () => Main);

@@ -1,5 +1,5 @@
 
-![demo首页](https://github.com/wangweianger/react-native-demo-app/blob/master/demoImg/01.png "demo首页")
+![demo首页](https://github.com/wangweianger/react-native-demo-app/blob/master/demoImg/02.png "demo首页")
 
 ## 项目步骤
 

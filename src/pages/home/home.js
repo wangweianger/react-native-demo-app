@@ -14,6 +14,7 @@ import Swiper from './item/swiper'
 import Entrys from './item/entrys'
 import BigImg from './item/bigImg'
 import MoreGoods from './item/moreGoods'
+import OneProduct from './item/oneProduct'
 
 export default class Home extends Component {
     constructor() {
@@ -45,6 +46,7 @@ export default class Home extends Component {
                     <Entrys />
                     <BigImg />
                     <MoreGoods />
+                    <OneProduct />
 
                     <Text style={styles.welcome}>
                         home!

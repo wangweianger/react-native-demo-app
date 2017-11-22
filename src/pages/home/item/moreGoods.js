@@ -12,6 +12,7 @@ export default class MoreGoods extends Component {
     constructor() {
         super();
         this.state = {
+            title:'优惠商品',
             datas:[
                 {
                     icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
@@ -62,6 +63,10 @@ export default class MoreGoods extends Component {
 
         return (
             <View style={styles.container} >
+                <Text
+                    style={styles.head} >
+                    {this.state.title}
+                </Text>  
                 <ScrollView horizontal={true} style={styles.main}>
                     {items} 
                 </ScrollView>
@@ -85,6 +90,14 @@ const styles = StyleSheet.create({
         paddingTop:10,
         paddingBottom:10,
 
+    },
+    head:{
+        fontSize:14,
+        color:'#333',
+        paddingTop:10,
+        paddingBottom:10,
+        paddingLeft:10,
+        fontWeight:'bold'
     },
     scrollitem:{
         width:util.size.width/3+30,

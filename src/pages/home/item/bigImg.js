@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         marginTop:8,
     },
     head:{
-        fontSize:12,
+        fontSize:14,
         color:'#333',
         paddingTop:10,
         paddingBottom:10,

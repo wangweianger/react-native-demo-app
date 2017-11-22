@@ -8,6 +8,7 @@ import {
   Image
 } from 'react-native';
 import util from '../../common/util'
+import {baseApi} from '../../common/config'
 
 import Search from './item/search'
 import Swiper from './item/swiper'
@@ -24,37 +25,42 @@ export default class Home extends Component {
         //默认不显示 ScrollView
         this.state = {
             isShow: false,
-            refreshing: false
+            refreshing: false,
+            datas:[]
         }
     }
 
     render() {
+        let items = []
+        this.state.datas.forEach((item,index)=>{
+            if(item.styleCode === 'banner_list'){ items.push( <Swiper key={index} datas={ item.list }/> ) };
+            if(item.styleCode === 'entrys_list'){ items.push( <Entrys key={index} datas={ item.list }/> ) };
+            if(item.styleCode === 'vertical_acts'){ items.push( <BigImg key={index} datas={ item.list }/> ) };
+            if(item.styleCode === 'moregoods_list'){ items.push( <MoreGoods key={index} title={item.styleTitle} datas={ item.list }/> ) };
+            if(item.styleCode === 'one_product'){ items.push( <OneProduct key={index} datas={ item.list }/> ) };
+            if(item.styleCode === 'four_product'){ items.push( <FourProduct key={index} datas={ item.list }/> ) };
+            if(item.styleCode === 'five_product'){ items.push( <FiveProduct key={index} bigImg={item.bigImg} datas={ item.list }/> ) };
+        })
+
         return (
             <View style={styles.container}>
                 <Search navigator={this.props.navigator}/>
-                <View style={styles.scrollView}>
-                <ScrollView 
-                    style={styles.scrollView}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            title="数据在加载中..."
-                            onRefresh={this._onRefresh.bind(this)}
-                            tintColor="#aaa"
-                            titleColor="#999"
-                            progressBackgroundColor="#ffff00"
-                        />
-                    }>
-                    <Swiper />
-                    <Entrys />
-                    <BigImg />
-                    <MoreGoods />
-                    <OneProduct />
-                    <BigImg />
-                    <FourProduct />
-                    <BigImg />
-                    <FiveProduct />
-                </ScrollView>
+                <View style={styles.flex}>
+                    <ScrollView 
+                        style={styles.flex}
+                        automaticallyAdjustContentInsets={false}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                title="数据在加载中..."
+                                onRefresh={this._onRefresh.bind(this)}
+                                tintColor="#aaa"
+                                titleColor="#999"
+                                progressBackgroundColor="#ffff00"
+                            />
+                        }>
+                        {items}
+                    </ScrollView>
                 </View>
             </View>
         );
@@ -66,22 +72,16 @@ export default class Home extends Component {
         that.setState({refreshing: true});
         setTimeout(function () {
             that._fetchData();
-        }, 3000)
-
+        }, 1000)
     }
 
     _fetchData(callback) {
         var that = this;
-        var url = "http://123.57.39.116:3000/data/read?type=config";
-        util.ajax(url, function (data) {
-            if (data.status === 1) {
-                let obj = data.data;
+        util.ajax(baseApi+'native/home/getHomeDatas', function (data) {
+            if (data.code === 1000) {
                 that.setState({
                     isShow: true,
-                    recommendTopic: obj.recommendTopic,
-                    hotTopic: obj.hotTopic,
-                    category: obj.category,
-                    other: obj.other,
+                    datas: data.data&&data.data.length?data.data:[],
                     refreshing: false
                 });
             } else {
@@ -94,7 +94,7 @@ export default class Home extends Component {
 
     //组件加载完毕时候调用 TODO fatch数据
     componentDidMount() {
-        // this._fetchData();
+        this._fetchData();
     }
 }
 
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: 10,
     },
-    scrollView: {
+    flex: {
         flex: 1,
     },
 });

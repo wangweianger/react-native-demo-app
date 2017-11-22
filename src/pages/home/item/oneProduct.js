@@ -10,14 +10,10 @@ import {
 } from 'react-native';
 
 export default class Entrys extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            datas:{
-                icon:'https://img.allpyra.com/46151b2b-a054-430b-b747-22b8f67d9ed0.jpg?imageslim',
-                title:'Michael Kors迈克·科尔斯 MK女士M系列大号格纹手提斜跨包 30F7SZ4T3U 黑色',
-                price:2999
-            },
+            datas:props.datas&&props.datas.length?props.datas[0]:[],
         }
     }
 
@@ -25,16 +21,16 @@ export default class Entrys extends Component {
         return (
             <View style={styles.container}>
                 <Image
-                    source={{uri: this.state.datas.icon}} 
+                    source={{uri: this.state.datas.pLogo}} 
                     style={{width: 100, height: 100}}/>
                 <View>    
                     <Text
                         style={styles.title} >
-                        {this.state.datas.title}
+                        {this.state.datas.pName}
                     </Text> 
                     <Text
                         style={styles.price} >
-                        ￥{this.state.datas.price.toFixed(2)}
+                        ￥{this.state.datas.actPrice.toFixed(2)}
                     </Text> 
                 </View> 
                 <TouchableOpacity onPress={this._onPressButton.bind(this)}>

@@ -4,13 +4,10 @@ import util from '../../../common/util'
 
 
 export default class Entrys extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            datas:{
-                icon:'https://img.allpyra.com/5e5ee553-def2-4659-8225-38d5f87d8c62.png?imageslim',
-                title:'美女精选'
-            },
+            datas:props.datas?props.datas:[],
         }
     }
 
@@ -19,10 +16,10 @@ export default class Entrys extends Component {
             <View style={styles.container}>
                 <Text
                     style={styles.head} >
-                    {this.state.datas.title}
+                    {this.state.datas[0].activityName}
                 </Text>  
                 <Image
-                    source={{uri: this.state.datas.icon}} 
+                    source={{uri: this.state.datas[0].bannerImg}} 
                     style={{width: util.size.width, height: 200}}/>
             </View>
         )

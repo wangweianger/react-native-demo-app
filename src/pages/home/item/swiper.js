@@ -1,39 +1,39 @@
 import React, { Component } from 'react';
-import { StyleSheet,View,Image } from 'react-native';
 import util from '../../../common/util'
 import Swiper from 'react-native-swiper';
-
+import { 
+    StyleSheet,
+    View,
+    Image 
+} from 'react-native';
 
 export default class Home extends Component {
-    constructor() {
-        super();
-        //默认不显示 ScrollView
+    constructor(props) {
+        super(props);
         this.state = {
             isShow: false,
-            refreshing: false
+            refreshing: false,
+            datas:props.datas?props.datas:[]
         }
     }
 
     render() {
+        let items = []
+        this.state.datas.forEach((item,index)=>{
+            items.push(
+                <View key={index}>
+                    <Image
+                        source={{uri:item.bannerImg}} 
+                        style={{width: util.size.width, height: 200}}/>
+                </View>
+            )
+        })
+
         return (
             <View style={styles.container}>
                 <Swiper style={styles.wrapper} showsButtons={false} loop={true} autoplay={true} autoplayTimeout={5} showsPagination={true}
                 dotStyle={{marginBottom:-20}} activeDotStyle={{marginBottom:-20}}>
-                    <View>
-                        <Image
-                            source={{uri:'https://img.allpyra.com/9bf51117-ded5-49e4-bb04-3c8c8268a3cd.png?imageslim'}} 
-                            style={{width: util.size.width, height: 200}}/>
-                    </View>
-                    <View>
-                        <Image
-                            source={{uri:'https://img.allpyra.com/b5faa181-39a9-4ff8-92ea-8ad0e2087118.png?imageslim'}} 
-                            style={{width: util.size.width, height: 200}}/>
-                    </View>
-                    <View>
-                        <Image
-                            source={{uri:'https://img.allpyra.com/09d76250-98be-4a1f-964b-7d090d8440ef.png?imageslim'}} 
-                            style={{width: util.size.width, height: 200}}/>
-                    </View>
+                    {items}
                 </Swiper>
             </View>
         );

@@ -9,37 +9,11 @@ import {
 } from 'react-native';
 
 export default class MoreGoods extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            title:'优惠商品',
-            datas:[
-                {
-                    icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
-                    desc:'Olay法国巴黎进口',
-                    price:'199.00'
-                },{
-                    icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
-                    desc:'Olay法国巴黎进口',
-                    price:'199.00'
-                },{
-                    icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
-                    desc:'Olay法国巴黎进口',
-                    price:'199.00'
-                },{
-                    icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
-                    desc:'Olay法国巴黎进口',
-                    price:'199.00'
-                },{
-                    icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
-                    desc:'Olay法国巴黎进口',
-                    price:'199.00'
-                },{
-                    icon:'https://img.allpyra.com/10ec4447-d7b3-4a05-85a0-aa2e12b26c41.jpg?imageslim',
-                    desc:'Olay法国巴黎进口',
-                    price:'199.00'
-                }
-            ]
+            title:props.title?props.title:'',
+            datas:props.datas?props.datas:[],
         }
     }
 
@@ -49,13 +23,13 @@ export default class MoreGoods extends Component {
             items.push(
                 <View key={index} style={styles.scrollitem}>
                     <Image
-                        source={{uri: item.icon}} 
+                        source={{uri: item.pLogo}} 
                         style={{width: util.size.width/3, height: 150}}/>
                     <Text style={styles.desc} >
-                        {item.desc}
+                        {item.pName}
                     </Text> 
                     <Text style={styles.title} >
-                        ￥{item.price}
+                        ￥{item.actPrice}
                     </Text>  
                 </View>
             )

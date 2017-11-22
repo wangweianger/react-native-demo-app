@@ -46,7 +46,7 @@ export default class Entrys extends Component {
                             source={{uri:item.icon}} 
                             style={{width:50 , height:50}}/>
                         <Text
-                            style={{fontSize:10,marginTop:5,color:'#333'}} >
+                            style={{fontSize:10,marginTop:5,color:'#333',textAlign:'center'}} >
                             {item.title}
                         </Text>
                     </TouchableOpacity>

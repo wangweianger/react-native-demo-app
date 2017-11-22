@@ -15,6 +15,8 @@ import Entrys from './item/entrys'
 import BigImg from './item/bigImg'
 import MoreGoods from './item/moreGoods'
 import OneProduct from './item/oneProduct'
+import FourProduct from './item/fourProduct'
+import FiveProduct from './item/fiveProduct'
 
 export default class Home extends Component {
     constructor() {
@@ -30,6 +32,7 @@ export default class Home extends Component {
         return (
             <View style={styles.container}>
                 <Search navigator={this.props.navigator}/>
+                <View style={styles.scrollView}>
                 <ScrollView 
                     style={styles.scrollView}
                     refreshControl={
@@ -47,11 +50,12 @@ export default class Home extends Component {
                     <BigImg />
                     <MoreGoods />
                     <OneProduct />
-
-                    <Text style={styles.welcome}>
-                        home!
-                    </Text>
+                    <BigImg />
+                    <FourProduct />
+                    <BigImg />
+                    <FiveProduct />
                 </ScrollView>
+                </View>
             </View>
         );
     }
@@ -97,7 +101,7 @@ export default class Home extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#f4f4f4',
     },
     welcome: {
         fontSize: 20,
@@ -106,7 +110,6 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         flex: 1,
-        marginTop: -20
     },
 });
 

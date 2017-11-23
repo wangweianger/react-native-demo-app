@@ -27,7 +27,7 @@ class Main extends Component {
 
     //私有方法
     _renderContent(moduleName) {
-        let view = <Home/>;
+        let view = null;
         switch (moduleName) {
             case 'homeTab':
                 view = <Home navigator={this.props.navigator}/>;

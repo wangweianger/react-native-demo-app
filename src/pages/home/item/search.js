@@ -4,10 +4,8 @@ import {
     Text,
     View,
     TextInput,
-    AlertIOS,
     Image
 } from 'react-native';
-/*第三方组件*/
 
 //公共组件
 import Uitls from '../../../common/util';
@@ -19,8 +17,9 @@ export default class search extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            navigator: props.navigator
+            navigator: props.navigator,
         }
+        this._search = this._search.bind(this);
     }
 
     render() {
@@ -44,7 +43,7 @@ export default class search extends Component {
     _search(text) {
         //判断数据是否为空
         if (!text) {
-            AlertIOS.alert('提示', '你尚未输入搜索的信息');
+            alert('提示', '你尚未输入搜索的信息');
             return;
         }
         let url = 'http://123.57.39.116:3000/data/read?type=it';

@@ -22,9 +22,8 @@ import FourProduct from './item/fourProduct'
 import FiveProduct from './item/fiveProduct'
 
 export default class Home extends Component {
-    constructor() {
-        super();
-        //默认不显示 ScrollView
+    constructor(props) {
+        super(props);
         this.state = {
             isShow: false,
             refreshing: false,
@@ -74,7 +73,6 @@ export default class Home extends Component {
                 <Loading />
             }    
             </View>
-            
         );
     }
 
@@ -105,7 +103,6 @@ export default class Home extends Component {
         })
     }
 
-    //组件加载完毕时候调用 TODO fatch数据
     componentDidMount() {
         this._fetchData();
     }

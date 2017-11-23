@@ -4,7 +4,8 @@ import {
     StyleSheet,
     Text,
     View,
-    TabBarIOS
+    TabBarIOS,
+    NavigatorIOS
 } from 'react-native';
 import { FOOTER_ICON } from './common/config'
 
@@ -14,11 +15,10 @@ import Category from './pages/category/category';
 import ShpoingCart from './pages/cart/shopingCart';
 import UserCenter from './pages/user/userCenter';
 
-export default class Main extends Component {
-
+class Main extends Component {
     //构造器
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             selectedTab: 'homeTab',
             totalCart:5,
@@ -30,19 +30,19 @@ export default class Main extends Component {
         let view = <Home/>;
         switch (moduleName) {
             case 'homeTab':
-                view = <Home/>;
+                view = <Home navigator={this.props.navigator}/>;
                 break;
             case 'categoryTab':
-                view = <Category/>;
+                view = <Category navigator={this.props.navigator}/>;
                 break;
             case 'cartTab':
-                view = <ShpoingCart/>;
+                view = <ShpoingCart navigator={this.props.navigator}/>;
                 break;
             case 'userTab':
-                view = <UserCenter/>;
+                view = <UserCenter navigator={this.props.navigator}/>;
                 break;
             default :
-                view = <Home/>;
+                view = <Home navigator={this.props.navigator}/>;
                 break;
         }
         return view;
@@ -106,3 +106,17 @@ export default class Main extends Component {
     }
 }
 
+//NavigatorIOS 对全部的信息进行路径导航
+export default class Root extends Component {
+    render() {
+        return (
+            <NavigatorIOS
+                initialRoute={{
+                    component: Main,
+                    title: '商城首页',
+                    navigationBarHidden:true
+                }}
+                style={{flex: 1}}/>
+        );
+    }
+}

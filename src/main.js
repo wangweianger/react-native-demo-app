@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import { FOOTER_ICON } from './common/config'
+import { Navigator } from 'react-native-deprecated-custom-components'
+import StatusBar from './components/StatusBar'
 import {
     AppRegistry,
     StyleSheet,
     Text,
     View,
     TabBarIOS,
-    NavigatorIOS
+    Platform
 } from 'react-native';
-import { FOOTER_ICON } from './common/config'
 
 //所依赖的模块组件
 import Home from './pages/home/home';
@@ -51,72 +53,91 @@ class Main extends Component {
     //试图渲染
     render() {
         return (
-            <TabBarIOS
-                unselectedTintColor="#999"
-                barTintColor="#fff"
-                tintColor="red"
-                >
-                <TabBarIOS.Item
-                    title="首页"
-                    icon={{uri: FOOTER_ICON.HOME, scale: 2}}
-                    selected={this.state.selectedTab === 'homeTab'}
-                    onPress={() => {
-                        this.setState({
-                          selectedTab: 'homeTab'
-                        });
-                    }}>
-                    {this._renderContent('homeTab')}
-                </TabBarIOS.Item>
-                <TabBarIOS.Item
-                    title="分类"
-                    icon={{uri: FOOTER_ICON.CATEGORY, scale: 2}}
-                    selected={this.state.selectedTab === 'categoryTab'}
-                    onPress={() => {
-                        this.setState({
-                          selectedTab: 'categoryTab'
-                        });
-                    }}>
-                    {this._renderContent('categoryTab')}
-                </TabBarIOS.Item>
-                <TabBarIOS.Item
-                    title="购物车"
-                    icon={{uri: FOOTER_ICON.CART, scale: 2}}
-                    selected={this.state.selectedTab === 'cartTab'}
-                    badge={this.state.totalCart}
-                    onPress={() => {
-                        this.setState({
-                          selectedTab: 'cartTab'
-                        });
-                    }}>
-                    {this._renderContent('cartTab')}
-                </TabBarIOS.Item>
-                <TabBarIOS.Item
-                    title="我的"
-                    icon={{uri: FOOTER_ICON.USER, scale: 2}}
-                    selected={this.state.selectedTab === 'userTab'}
-                    onPress={() => {
-                        this.setState({
-                          selectedTab: 'userTab'
-                        });
-                    }}>
-                    {this._renderContent('userTab')}
-                </TabBarIOS.Item>
-            </TabBarIOS>
+            <View style={{flex:1}}>
+                <StatusBar backgroundColor="#868FD4" barStyle="light-content" />
+                <TabBarIOS
+                    unselectedTintColor="#999"
+                    barTintColor="#fff"
+                    tintColor="red"
+                    >
+                    <TabBarIOS.Item
+                        title="首页"
+                        icon={{uri: FOOTER_ICON.HOME, scale: 2}}
+                        selected={this.state.selectedTab === 'homeTab'}
+                        onPress={() => {
+                            this.setState({
+                              selectedTab: 'homeTab'
+                            });
+                        }}>
+                        {this._renderContent('homeTab')}
+                    </TabBarIOS.Item>
+                    <TabBarIOS.Item
+                        title="分类"
+                        icon={{uri: FOOTER_ICON.CATEGORY, scale: 2}}
+                        selected={this.state.selectedTab === 'categoryTab'}
+                        onPress={() => {
+                            this.setState({
+                              selectedTab: 'categoryTab'
+                            });
+                        }}>
+                        {this._renderContent('categoryTab')}
+                    </TabBarIOS.Item>
+                    <TabBarIOS.Item
+                        title="购物车"
+                        icon={{uri: FOOTER_ICON.CART, scale: 2}}
+                        selected={this.state.selectedTab === 'cartTab'}
+                        badge={this.state.totalCart}
+                        onPress={() => {
+                            this.setState({
+                              selectedTab: 'cartTab'
+                            });
+                        }}>
+                        {this._renderContent('cartTab')}
+                    </TabBarIOS.Item>
+                    <TabBarIOS.Item
+                        title="我的"
+                        icon={{uri: FOOTER_ICON.USER, scale: 2}}
+                        selected={this.state.selectedTab === 'userTab'}
+                        onPress={() => {
+                            this.setState({
+                              selectedTab: 'userTab'
+                            });
+                        }}>
+                        {this._renderContent('userTab')}
+                    </TabBarIOS.Item>
+                </TabBarIOS>
+            </View>
+        );
+    }
+}
+
+export default class Root extends Component {
+    render() {
+        return (
+            <Navigator
+                initialRoute={{component: Main,statusBarHidden: true }}
+                renderScene={(route, navigator)=>{
+                    let Component = route.component;
+                    return (
+                        <Component {...route.params} navigator={navigator} />
+                    );
+                }}/>
         );
     }
 }
 
 //NavigatorIOS 对全部的信息进行路径导航
-export default class Root extends Component {
-    render() {
-        return (
-            <NavigatorIOS
-                initialRoute={{
-                    component: Main,
-                    title: '商城首页',
-                    navigationBarHidden:true
-                }}
-                style={{flex: 1}}/>
-        );
-    }
-}
+// export default class Root extends Component {
+//     render() {
+//         return (
+//             <NavigatorIOS
+//                 translucent={true}
+//                 initialRoute={{
+//                     component: Main,
+//                     title: '首页',
+//                     navigationBarHidden:true
+//                 }}
+//                 style={{flex: 1}}/>
+//         );
+//     }
+// }

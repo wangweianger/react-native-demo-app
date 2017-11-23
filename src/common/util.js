@@ -32,6 +32,7 @@ module.exports = {
                 successCallback(JSON.parse(responseText));
             })
             .catch(function (err) {
+                alert('服务异常,正在紧急修复,请耐心等待1');
                 failCallback(err);
             });
     }

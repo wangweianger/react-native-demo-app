@@ -3354,6 +3354,16 @@ react-devtools-core@^2.0.8:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
+react-native-deprecated-custom-components@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/react-native-deprecated-custom-components/-/react-native-deprecated-custom-components-0.1.1.tgz#bb911f01bf2f47f0a91764757bf918f3216e94e9"
+  dependencies:
+    fbjs "~0.8.9"
+    immutable "~3.7.6"
+    prop-types "^15.5.10"
+    react-timer-mixin "^0.13.2"
+    rebound "^0.0.13"
+
 react-native-lazyload@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/react-native-lazyload/-/react-native-lazyload-1.1.0.tgz#463d76ecbdec5cbe79060bce65b673e4b164b364"

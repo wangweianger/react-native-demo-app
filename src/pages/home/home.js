@@ -29,7 +29,6 @@ export default class Home extends Component {
             refreshing: false,
             datas:[]
         }
-        this.timer = null
     }
 
     render() {
@@ -86,7 +85,6 @@ export default class Home extends Component {
     }
 
     _fetchData(callback) {
-        clearTimeout(this.timer)
         var that = this;
         util.ajax(baseApi+'native/home/getHomeDatas', function (data) {
             if (data.code === 1000) {
@@ -95,11 +93,7 @@ export default class Home extends Component {
                     datas: data.data&&data.data.length?data.data:[],
                     refreshing: false
                 });
-            } else {
-                alert('服务异常,正在紧急修复,请耐心等待1');
             }
-        }, function (err) {
-            alert('服务异常,正在紧急修复,请耐心等待2');
         })
     }
 

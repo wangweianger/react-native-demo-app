@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import util from '../../../common/util'
+import { LazyloadView , LazyloadImage } from 'react-native-lazyload';
 import { 
     StyleSheet,
     View,
     Text,
-    Image,
     ScrollView 
 } from 'react-native';
 
@@ -21,8 +21,9 @@ export default class MoreGoods extends Component {
         let items = []
         this.state.datas.forEach((item,index)=>{
             items.push(
-                <View key={index} style={styles.scrollitem}>
-                    <Image
+                <LazyloadView host="scroll" key={index} style={styles.scrollitem}>
+                    <LazyloadImage
+                        host="scroll"
                         source={{uri: item.pLogo}} 
                         style={{width: util.size.width/3, height: 150}}/>
                     <Text style={styles.desc} >
@@ -31,7 +32,7 @@ export default class MoreGoods extends Component {
                     <Text style={styles.title} >
                         ￥{item.actPrice}
                     </Text>  
-                </View>
+                </LazyloadView>
             )
         })
 

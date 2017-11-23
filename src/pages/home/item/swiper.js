@@ -4,7 +4,7 @@ import Swiper from 'react-native-swiper';
 import { 
     StyleSheet,
     View,
-    Image 
+    Image
 } from 'react-native';
 
 export default class Home extends Component {

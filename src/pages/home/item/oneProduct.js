@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import util from '../../../common/util'
+import { LazyloadView , LazyloadImage } from 'react-native-lazyload';
 import { 
     StyleSheet,
     View,
     Text,
     Image,
-    TouchableOpacity,
-    Alert 
+    TouchableOpacity
 } from 'react-native';
 
 export default class Entrys extends Component {
@@ -19,8 +19,9 @@ export default class Entrys extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Image
+            <LazyloadView host="scroll" style={styles.container}>
+                <LazyloadImage
+                    host="scroll"
                     source={{uri: this.state.datas.pLogo}} 
                     style={{width: 100, height: 100}}/>
                 <View>    
@@ -41,12 +42,12 @@ export default class Entrys extends Component {
                             source={require('../img/cart.png')}/>
                     </View> 
                 </TouchableOpacity>   
-            </View>
+            </LazyloadView>
         )
     }
 
     _onPressButton(){
-        Alert.alert('Button has been pressed!');
+        alert('Button has been pressed!');
     }
    
 }

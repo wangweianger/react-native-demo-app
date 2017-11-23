@@ -3,7 +3,6 @@ import util from '../../../common/util'
 import { 
     StyleSheet,
     View,
-    Alert,
     Text,
     Image,
     TouchableOpacity 
@@ -23,9 +22,10 @@ export default class Entrys extends Component {
         let items = []
         this.state.entrys.forEach((item,index)=>{
             items.push(
-                <View key={index} style={styles.item}>
+                <View host="scroll" key={index} style={styles.item}>
                     <TouchableOpacity onPress={this._onPressButton.bind(this)}>
                         <Image
+                            host="scroll"
                             source={{uri:item.bannerImg}} 
                             style={{width:50 , height:50}}/>
                         <Text
@@ -44,7 +44,7 @@ export default class Entrys extends Component {
     }
 
     _onPressButton(){
-        Alert.alert('Button has been pressed!');
+        alert('Button has been pressed!');
     }
 }
 

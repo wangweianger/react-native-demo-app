@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import util from '../../../common/util'
+import { LazyloadView , LazyloadImage } from 'react-native-lazyload';
 import { 
     StyleSheet,
     View,
-    Text,
-    Image,
-    TouchableOpacity,
-    Alert 
+    Text
 } from 'react-native';
 
 export default class Entrys extends Component {
@@ -22,8 +20,9 @@ export default class Entrys extends Component {
         let items = []
         this.state.datas.forEach((item,index)=>{
             items.push(
-                <View key={index} style={styles.items}>
-                    <Image
+                <LazyloadView host="scroll" key={index} style={styles.items}>
+                    <LazyloadImage
+                        host="scroll"
                         source={{uri: item.pLogo}} 
                         style={styles.itemimg}/> 
                     <View>      
@@ -36,14 +35,15 @@ export default class Entrys extends Component {
                             ￥{item.actPrice.toFixed(2)}
                         </Text>
                     </View>          
-                </View>
+                </LazyloadView>
             )
             
         })
 
         return (
             <View style={styles.container}>
-                <Image
+                <LazyloadImage
+                    host="scroll"
                     source={{uri: this.state.imgMsg.bannerImg}} 
                     style={styles.bigImg}/> 
                 <View style={styles.main}>

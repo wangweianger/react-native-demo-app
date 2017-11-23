@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
+import util from '../../common/util'
+import {baseApi} from '../../common/config'
+import {
+    LazyloadScrollView,
+} from 'react-native-lazyload';
 import {
   StyleSheet,
   Text,
-  ScrollView,
   RefreshControl,
-  View,
-  Image
+  View
 } from 'react-native';
-import util from '../../common/util'
-import {baseApi} from '../../common/config'
 
+import Loading from '../../components/loading'
 import Search from './item/search'
 import Swiper from './item/swiper'
 import Entrys from './item/entrys'
@@ -28,6 +30,7 @@ export default class Home extends Component {
             refreshing: false,
             datas:[]
         }
+        this.timer = null
     }
 
     render() {
@@ -43,26 +46,35 @@ export default class Home extends Component {
         })
 
         return (
-            <View style={styles.container}>
-                <Search navigator={this.props.navigator}/>
-                <View style={styles.flex}>
-                    <ScrollView 
-                        style={styles.flex}
-                        automaticallyAdjustContentInsets={false}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={this.state.refreshing}
-                                title="数据在加载中..."
-                                onRefresh={this._onRefresh.bind(this)}
-                                tintColor="#aaa"
-                                titleColor="#999"
-                                progressBackgroundColor="#ffff00"
-                            />
-                        }>
-                        {items}
-                    </ScrollView>
+            <View style={styles.flex}>
+            {
+                this.state.isShow ?
+                <View style={styles.container}>
+                    <Search navigator={this.props.navigator}/>
+                    <View style={styles.flex}>
+                        <LazyloadScrollView 
+                            style={styles.flex}
+                            name="scroll"
+                            automaticallyAdjustContentInsets={false}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    title="数据在加载中..."
+                                    onRefresh={this._onRefresh.bind(this)}
+                                    tintColor="#aaa"
+                                    titleColor="#999"
+                                    progressBackgroundColor="#ffff00"
+                                />
+                            }>
+                            {items}
+                        </LazyloadScrollView>
+                    </View>
                 </View>
+                :
+                <Loading />
+            }    
             </View>
+            
         );
     }
 
@@ -76,6 +88,7 @@ export default class Home extends Component {
     }
 
     _fetchData(callback) {
+        clearTimeout(this.timer)
         var that = this;
         util.ajax(baseApi+'native/home/getHomeDatas', function (data) {
             if (data.code === 1000) {

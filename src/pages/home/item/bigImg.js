@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet,View,Text,Image } from 'react-native';
 import util from '../../../common/util'
-
+import { LazyloadImage } from 'react-native-lazyload';
+import { 
+    StyleSheet,
+    View,
+    Text,
+    Image 
+} from 'react-native';
 
 export default class Entrys extends Component {
     constructor(props) {
@@ -18,7 +23,8 @@ export default class Entrys extends Component {
                     style={styles.head} >
                     {this.state.datas[0].activityName}
                 </Text>  
-                <Image
+                <LazyloadImage
+                    host="scroll"
                     source={{uri: this.state.datas[0].bannerImg}} 
                     style={{width: util.size.width, height: 200}}/>
             </View>

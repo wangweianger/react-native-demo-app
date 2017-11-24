@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import util from '../../common/util'
 import { baseApi } from '../../common/config'
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
@@ -16,39 +15,21 @@ import {
 
 import Loading from '../../components/loading'
 
+import Cartfooter from './item/cartfooter'
+import Cartitem from './item/cartitem'
+
 export default class Zane extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isShow: true,
+            isShow: false,
             isCheckAll:true,
-            refreshing:false,            
+            refreshing:false,
+            cartCount:0,
+            isEdit:false,
+            totalPrice:0,
+            datas:[]            
         }
-    }
-
-    // 底部
-    renderFooter(){
-        return (
-            <View style={styles.footer} >
-                <View style={styles.footer_left} >
-                    {
-                        this.state.isCheckAll?
-                        <Image 
-                            source={require('./img/yes.png')} 
-                            style={{width: 20, height: 20}}/>
-                        :
-                        <Image 
-                            source={require('./img/no.png')} 
-                            style={{width: 22, height: 22}}/>   
-                    }
-                    <Text style={styles.checkAll}>全选</Text>    
-                </View>
-                <Text style={styles.totalPrice}>合计:¥143.56</Text>  
-                <View style={styles.footer_right} >  
-                    <Text style={styles.submit}>提交</Text>   
-                </View>
-            </View> 
-        )
     }
 
     render() {
@@ -58,8 +39,10 @@ export default class Zane extends Component {
                 this.state.isShow ?
                 <View style={styles.flex}>
                     <View style={styles.bottomBottm}>
-                        <Text style={ styles.title }>购物车(5)</Text>
-                        <Text style={ styles.edit }>编辑</Text>
+                        <Text style={ styles.title }>购物车({this.state.cartCount})</Text>
+                        <TouchableOpacity style={ styles.parentedit } onPress={this._editGoods.bind(this)}>
+                            <Text style={ styles.edit }>{ this.state.isEdit?'完成':'编辑' } </Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.main}>
                         <ScrollView 
@@ -75,10 +58,18 @@ export default class Zane extends Component {
                                     progressBackgroundColor="#ffff00"
                                 />
                             }>
-                            <Text style={styles.checkAll}>全选</Text>    
+                            <Cartitem 
+                                cartCount={this.state.cartCount}
+                                getPayTotalPrice={this.getPayTotalPrice.bind(this)}
+                                items={this.state.datas} 
+                                isEdit={this.state.isEdit} 
+                                isCheckAll={this.state.isCheckAll} />
                         </ScrollView>
                     </View>
-                    { this.renderFooter() }
+                    <Cartfooter 
+                        totalPrice={this.state.totalPrice}
+                        isCheckAll={this.state.isCheckAll} 
+                        handleIsCheckAll={this.handleIsCheckAll.bind(this)}  />
                 </View>
                 :
                 <Loading />
@@ -87,31 +78,58 @@ export default class Zane extends Component {
         );
     }
 
-    _onRefresh(){
-
+    // 编辑商品
+    _editGoods(){
+        this.setState({
+            isEdit:!this.state.isEdit
+        })
     }
 
-    onPressLearnMore(){
-        alert('alert')
+    _onRefresh(){
+        this.setState({refreshing: true});
+        this.getAllBigcategory()
     }
 
     componentDidMount() {
-        
+        this.getAllBigcategory()
     }
 
     getAllBigcategory(){
-        util.ajax(baseApi+'native/category/getAllBigcategory',  (data)=> {
+        util.ajax(baseApi+'native/cart/getTotalCartList',  (data)=> {
             if (data.code === 1000) {
-                if(data.data&&data.data.length){
-                    this.setState({
-                        bannerImg:data.data[0].banner1,
-                        leftData: data.data
-                    });
-                }else{
-                    this.setState({ isShow: true });
-                }
+                let totalPrice = 0;
+                data.data.list.forEach((item)=>{
+                    item.isChecked=true
+                    totalPrice += item.salePrice
+                })
+                this.setState({
+                    refreshing:false,
+                    isShow: true,
+                    totalPrice:totalPrice,
+                    cartCount:data.data.cartCount,
+                    datas: data.data.list
+                });
             }
         }) 
+    }
+
+    // 是否全选
+    handleIsCheckAll(isCheckAll){
+        this.setState({
+            isCheckAll:isCheckAll
+        })
+    }
+
+    // 获得结算总价格
+    getPayTotalPrice(totalPrice,cartCount){
+        this.setState({
+            totalPrice:totalPrice,
+        })
+        if(cartCount+''){
+            this.setState({
+                cartCount:cartCount
+            }) 
+        }
     }
 }
 
@@ -135,10 +153,12 @@ const styles = StyleSheet.create({
         backgroundColor:'#868FD4',
         color:'#fff'
     },
-    edit:{
+    parentedit:{
         position:'absolute',
         right:10,
         top:20,
+    },
+    edit:{
         fontSize:14,
         backgroundColor:'#868FD4',
         color:'#fff'
@@ -146,45 +166,6 @@ const styles = StyleSheet.create({
     main:{
         height:util.size.height-170,
     },
-
-
-
-    footer:{
-        flexDirection: 'row',
-        justifyContent:'space-between',
-        alignItems:'center',
-        height:50,
-        backgroundColor:'#fff',
-        borderTopColor:'#ddd',
-        borderTopWidth:util.pixel,
-        borderStyle:'solid',
-
-    },
-    footer_left:{
-        flexDirection: 'row',
-        alignItems:'center',
-        marginLeft:10,
-    },
-    checkAll:{
-        fontSize:16,
-    },
-    totalPrice:{
-        color:'red',
-        fontSize:14,
-    },
-    footer_right:{
-        width:100,
-        height:50,
-        backgroundColor:'red',
-        justifyContent:'center',
-        alignItems:'center',
-    },
-    submit:{
-        color:'#fff',
-        fontSize:16,
-        textAlign:'center',
-    },
-
 });
 
 

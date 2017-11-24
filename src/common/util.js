@@ -35,5 +35,16 @@ module.exports = {
                 alert('服务异常,正在紧急修复,请耐心等待1');
                 failCallback(err);
             });
-    }
+    },
+    //limitTo过滤器
+    limitTo(value, num) {
+        if (!value) return;
+        var text = "";
+        if (value.length < num) {
+            text = value;
+        } else {
+            text = value.substring(0, num) + '···';
+        }
+        return text;
+    },
 };

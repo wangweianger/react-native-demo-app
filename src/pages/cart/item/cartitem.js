@@ -1,105 +1,217 @@
 import React, { Component } from 'react';
-import util from '../../common/util'
-import { baseApi } from '../../common/config'
+import util from '../../../common/util'
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
-  Platform,
-  StatusBar,
   TouchableOpacity,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 
-import Loading from '../../components/loading'
+import Hr from '../../../components/Hr'
 
-export default class Zane extends Component {
+export default class Cartitem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isShow: true,
-            refreshing: false,
-            leftData:[],
-            rightData:[],
-            activeIndex:0
+            items:props.items?props.items:[],
+            cartCount:props.cartCount
         }
     }
 
     render() {
-        
-
+        let itemlist=[]
+        this.state.items.forEach((item,index)=>{
+            itemlist.push(
+                <View key={index} style={styles.itemsMain}>
+                    <View style={styles.items}>
+                        <TouchableOpacity onPress={this._checkItem.bind(this,item)}>
+                        {
+                            item.isChecked?
+                            <Image 
+                                source={require('../img/yes.png')} 
+                                style={{width: 20, height: 20}}/>
+                            :
+                            <Image 
+                                source={require('../img/no.png')} 
+                                style={{width: 20, height: 20}}/>   
+                        } 
+                        </TouchableOpacity>
+                        <Image 
+                            source={{ uri: item.mainIcon}} 
+                            style={{width: 50, height: 50,marginLeft:10 }}/>  
+                        <View style={styles.textMsg}>       
+                            <Text style={styles.item_title}> { util.limitTo(item.itemTitle,30) } </Text>
+                            <Text style={styles.item_price}> ¥{ item.salePrice.toFixed(2) } </Text>
+                        </View>
+                        <View style={styles.item_right}> 
+                            {
+                                this.props.isEdit?
+                                <View style={styles.flex}>
+                                    <View style={styles.caozuo}>
+                                        <TouchableOpacity onPress={this._reduceItemNum.bind(this,item)}>
+                                            <Image 
+                                                source={require('../img/reduce.png')} 
+                                                style={{width: 20, height: 20}}/> 
+                                        </TouchableOpacity>    
+                                        <Text style={styles.caozuo_num}> { item.num } </Text> 
+                                        <TouchableOpacity onPress={this._addItemNum.bind(this,item)}> 
+                                            <Image 
+                                                source={require('../img/add.png')} 
+                                                style={{width: 20, height: 20}}/>  
+                                        </TouchableOpacity>      
+                                    </View>
+                                    <TouchableOpacity onPress={this._deleteItemNum.bind(this,item)}> 
+                                        <Image 
+                                            source={require('../img/delete.png')} 
+                                            style={styles.caozuo_delete}/> 
+                                    </TouchableOpacity>     
+                                </View>
+                                :
+                                <Text style={styles.item_number}> x{ item.num } </Text>    
+                            }
+                        </View>
+                    </View>
+                    <Hr/>
+                </View>
+            )
+        })
         return (
             <View style={styles.container}>
-            {
-                this.state.isShow ?
-                <View style={styles.flex}>
-                    <View style={styles.bottomBottm}>
-                        <Text style={ styles.title }>购物车(5)</Text>
-                        <Text style={ styles.edit }>编辑</Text>
-                    </View>
-                    <View style={[styles.flex, styles.main]} >
-                        
-                    </View>
-                </View>
-                :
-                <Loading />
-            } 
+                {itemlist}
             </View>
         );
     }
 
-    componentDidMount() {
-        
+    // 删除单个商品
+    _deleteItemNum(item){
+        Alert.alert(
+            '删除',
+            '确认删除此商品吗？',
+            [
+                {text: '取消', style: 'cancel'},
+                {text: '确定', onPress: () => alert(`删除了cid为${item.cid}的商品，此功能不做!`)},
+            ],
+            { cancelable: false }
+        )
     }
 
-    getAllBigcategory(){
-        util.ajax(baseApi+'native/category/getAllBigcategory',  (data)=> {
-            if (data.code === 1000) {
-                if(data.data&&data.data.length){
-                    this.setState({
-                        bannerImg:data.data[0].banner1,
-                        leftData: data.data
-                    });
-                }else{
-                    this.setState({ isShow: true });
-                }
+    // 单个是否选择
+    _checkItem(item){
+        item.isChecked=!item.isChecked
+        this.setState({
+            items:this.state.items
+        })
+        this.getTotalPrice()
+    }
+
+    // 减少商品
+    _reduceItemNum(item){
+        if(item.num<=1){ alert('最少购买一个商品额！'); return }
+        item.num-=1
+        this.setState({
+            cartCount:this.state.cartCount-=1,
+            items:this.state.items
+        })
+        this.getTotalPrice()
+    }
+
+    // 增加商品
+    _addItemNum(item){
+        item.num+=1
+        this.setState({
+            cartCount:this.state.cartCount+=1,
+            items:this.state.items
+        })
+        this.getTotalPrice()
+    }
+
+    // 根据是否全选状态更改 item 是是否选中
+    componentWillReceiveProps(nextProps) {
+        if(this.props.isCheckAll !== nextProps.isCheckAll){
+            this.state.items.forEach(item=> {
+                item.isChecked = nextProps.isCheckAll?true:false
+            })
+            this.getTotalPrice()
+        }
+    }
+
+    // 获得总价格
+    getTotalPrice(){
+        let totalPrice = 0
+        this.state.items.forEach(item=> {
+            if(item.isChecked){
+                totalPrice += item.salePrice*item.num
             }
-        }) 
+        })
+        this.props.getPayTotalPrice(totalPrice,this.state.cartCount)
     }
-
-  
-    
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#fff',
     },
-    flex:{
-        flex:1,
-    },
-    bottomBottm:{
+    itemsMain:{
+        marginLeft:15,
+        marginRight:15,
         position:'relative',
     },
-    title:{
-        backgroundColor:'#fff',
-        height:50,
-        lineHeight:50,
-        fontSize:18,
-        textAlign:'center',
-        backgroundColor:'#868FD4',
-        color:'#fff'
+    items:{
+        flexDirection: 'row',
+        flexWrap:'nowrap',
+        alignItems:'center',
+        paddingTop:15,
+        paddingBottom:15,
+        height:80,
     },
-    edit:{
+    textMsg:{
+        width:200,
+    },
+    item_title:{
+        fontSize:12,
+        marginBottom:5,
+    },
+    item_price:{
+        fontSize:14,
+        color:'red'
+    },
+    item_right:{
+        position:'absolute',
+        right:0,
+        top:0,
+        width:60,
+        height:80,
+        // backgroundColor:'#ccc',
+    },
+    item_number:{
+        fontSize:16,
+        color:'#999',
         position:'absolute',
         right:10,
-        top:20,
-        fontSize:14,
-        backgroundColor:'#868FD4',
-        color:'#fff'
+        bottom:10,
     },
-
+    caozuo:{
+        flexDirection: 'row',
+        flexWrap:'nowrap',
+        marginTop:10,
+    },
+    caozuo_num:{
+        fontSize:16,
+        width:20,
+        textAlign:'center',
+        marginRight:3
+    },
+    caozuo_delete:{
+        width:20,
+        height:20,
+        marginLeft:20,
+        marginTop:15
+    },
     
 });
+
+
+

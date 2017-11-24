@@ -8,7 +8,8 @@ import {
   View,
   Platform,
   StatusBar,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from 'react-native';
 
 import Loading from '../../components/loading'
@@ -20,7 +21,8 @@ export default class Zane extends Component {
             isShow: false,
             refreshing: false,
             leftData:[],
-            rightData:[]
+            rightData:[],
+            activeIndex:0
         }
     }
 
@@ -29,8 +31,11 @@ export default class Zane extends Component {
         this.state.leftData.forEach((item,index)=>{
             items.push(
                 <View key={index} style={styles.item}>
-                    <TouchableOpacity onPress={this._onPressButton.bind(this)}>
-                        <Text style={{ fontSize:16,textAlign:'center' }}> {item.categName} </Text>
+                    <TouchableOpacity onPress={this._onPressButton.bind(this,index)}>
+                        <Text 
+                            style={[this.state.activeIndex===index&&styles.active,{ fontSize:16,textAlign:'center' }]}> 
+                            {item.categName} 
+                        </Text>
                     </TouchableOpacity>
                 </View>
             )
@@ -42,16 +47,41 @@ export default class Zane extends Component {
         )
     }
 
-    _onPressButton(){
-        alert('Button has been pressed!');
+    _onPressButton(index){
+        this.setState({
+            activeIndex:index
+        })
     }
 
     renderRight(){
+        let items=[]
+        this.state.rightData.forEach((item,index)=>{
+            items.push(
+                <View key={index} style={styles.rightitem}>
+                    <TouchableOpacity onPress={this._onPressGoingButton.bind(this,item)}>
+                        <Image 
+                            source={{uri:item.logourl}} 
+                            style={{width: 70, height: 70}}/>
+                        <Text style={{ fontSize:12,textAlign:'center' }}> {item.categName} </Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        })
+
         return (
-            <View>
-                <Text> Left00 </Text>
+            <View style={styles.rightMain}>
+                <Image 
+                    source={{uri:this.state.bannerImg}} 
+                    style={{width: util.size.width-80, height: 100}}/>
+                <View style={styles.rightList}>
+                    {items}
+                </View>
             </View>
         )
+    }
+
+    _onPressGoingButton(item){
+        alert(item.scid)
     }
 
     render() {
@@ -81,15 +111,31 @@ export default class Zane extends Component {
     }
 
     componentDidMount() {
-        this._fetchData();
+        this.getAllBigcategory();
     }
 
-    _fetchData(){
+    getAllBigcategory(){
         util.ajax(baseApi+'native/category/getAllBigcategory',  (data)=> {
+            if (data.code === 1000) {
+                if(data.data&&data.data.length){
+                    this.getOneCategory(data.data[0].cid)
+                    this.setState({
+                        bannerImg:data.data[0].banner1,
+                        leftData: data.data
+                    });
+                }else{
+                    this.setState({ isShow: true });
+                }
+            }
+        }) 
+    }
+
+    getOneCategory(parentCategId){
+        util.ajax(baseApi+`native/category/getOneCategory?parentCategId=${parentCategId}`,  (data)=> {
             if (data.code === 1000) {
                 this.setState({
                     isShow: true,
-                    leftData: data.data&&data.data.length?data.data:[],
+                    rightData:data.data&&data.data.length?data.data:[],
                 });
             }
         })
@@ -134,5 +180,21 @@ const styles = StyleSheet.create({
         height:50,
         justifyContent:'center'
     },
+    active:{
+        color:'red'
+    },
+    rightMain:{
+        flex:1,
+        padding:10,
+    },
+    rightList:{
+        flexDirection:'row',
+        flexWrap:'wrap',
+    },
+    rightitem:{
+        width:(util.size.width-80)/3,
+        height:120,
+        alignItems:'center',
+        justifyContent:'center'
+    },
 });
-

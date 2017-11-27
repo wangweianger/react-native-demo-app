@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import util from '../../common/util'
 import { baseApi } from '../../common/config'
+import { connect } from 'react-redux'
+import { updateCartNumber } from '../../redux/actions'
 import {
   StyleSheet,
   Text,
@@ -18,7 +20,7 @@ import Loading from '../../components/loading'
 import Cartfooter from './item/cartfooter'
 import Cartitem from './item/cartitem'
 
-export default class Zane extends Component {
+class Cart extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -129,9 +131,12 @@ export default class Zane extends Component {
             this.setState({
                 cartCount:cartCount
             }) 
+            this.props.dispatch(updateCartNumber(cartCount));
         }
     }
 }
+
+export default connect()(Cart);
 
 const styles = StyleSheet.create({
     container: {

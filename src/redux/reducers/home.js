@@ -1,7 +1,9 @@
 
 import * as actionTypes from '../actionTypes'
 
-const initialState = []
+const initialState = {
+    number:10
+}
 
 export default function home (state = initialState, action) {
     switch (action.type) {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import util from '../../common/util'
-import {baseApi} from '../../common/config'
+import { baseApi } from '../../common/config'
+import { connect } from 'react-redux'
+import { getCartNumber,updateCartNumber } from '../../redux/actions'
 import {
     LazyloadScrollView,
 } from 'react-native-lazyload';
@@ -21,7 +23,7 @@ import OneProduct from './item/oneProduct'
 import FourProduct from './item/fourProduct'
 import FiveProduct from './item/fiveProduct'
 
-export default class Home extends Component {
+class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -97,10 +99,19 @@ export default class Home extends Component {
         })
     }
 
+    // 获得购物车总数量
+    _getCartTotalNum(){
+        const { dispatch } = this.props
+        dispatch(getCartNumber())
+    }
+
     componentDidMount() {
-        this._fetchData();
+        this._fetchData()
+        this._getCartTotalNum()
     }
 }
+
+export default connect()(Home)
 
 const styles = StyleSheet.create({
     container: {

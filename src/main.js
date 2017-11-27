@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FOOTER_ICON } from './common/config'
 import { Navigator } from 'react-native-deprecated-custom-components'
 import StatusBar from './components/StatusBar'
+import { connect } from 'react-redux'
 import {
     AppRegistry,
     StyleSheet,
@@ -23,7 +24,7 @@ class Main extends Component {
         super(props);
         this.state = {
             selectedTab: 'homeTab',
-            totalCart:5,
+            totalCart:0,
         }
     }
 
@@ -48,6 +49,11 @@ class Main extends Component {
                 break;
         }
         return view;
+    }
+
+    componentWillReceiveProps(nextProps){
+        const { number } = nextProps
+        if(number) this.setState({ totalCart:number });
     }
 
     //试图渲染
@@ -111,11 +117,23 @@ class Main extends Component {
     }
 }
 
-export default class Root extends Component {
+// 获取购物车数量
+const mapStateToProps = (state) => {
+    return { 
+        number:state.cart.number 
+    }
+};
+
+// app 导航
+class Root extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <Navigator
-                initialRoute={{component: Main,statusBarHidden: true }}
+                initialRoute={{component: connect(mapStateToProps)(Main),statusBarHidden: true }}
                 renderScene={(route, navigator)=>{
                     let Component = route.component;
                     return (
@@ -126,18 +144,5 @@ export default class Root extends Component {
     }
 }
 
-//NavigatorIOS 对全部的信息进行路径导航
-// export default class Root extends Component {
-//     render() {
-//         return (
-//             <NavigatorIOS
-//                 translucent={true}
-//                 initialRoute={{
-//                     component: Main,
-//                     title: '首页',
-//                     navigationBarHidden:true
-//                 }}
-//                 style={{flex: 1}}/>
-//         );
-//     }
-// }
+export default connect()(Root)
+

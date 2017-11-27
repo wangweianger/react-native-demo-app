@@ -1,13 +1,9 @@
-import * as actionTypes from '../actionTypes'
+import { UPDATE_CART_NUMBER } from '../actionTypes'
+
 
 /*
  * action 创建函数
  */
-export function addTodo(text) {
-    return { type: actionTypes.ADD_TODO, text }
-}
-
-export function completeTodo(index) {
-    return { type: actionTypes.COMPLETE_TODO, index }
-}
-
+export const updateHome = (number) => {
+    return { type: UPDATE_CART_NUMBER, number:number };
+};
